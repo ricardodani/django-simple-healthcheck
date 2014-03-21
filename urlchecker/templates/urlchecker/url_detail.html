@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for hc in object.healthcheck_set.all %}
+                {% for hc in object.healthcheck_set.all|slice:":100" %}
                     <tr>
                         <td>
                             {% if hc.status %}
