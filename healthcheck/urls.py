@@ -7,5 +7,5 @@ urlpatterns = patterns('',
     # Examples:
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^healthcheck/', include('urlchecker.urls')),
+    url(r'^', include('urlchecker.urls')),
 )
