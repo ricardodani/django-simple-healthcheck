@@ -1,1 +1,35 @@
-<!DOCTYPE html>
+{% extends "urlchecker/base.html" %}
+
+{% load i18n %}
+
+{% block title %}- Urls{% endblock %}
+
+{% block content %}
+    <h1>Urls</h1>
+    {% if urls %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Url</th>
+                <th>Last Health Check</th>
+                <th>When</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for url in urls %}
+            <tr>
+                <td>{{ url.id }}</td>
+                <td>{{ url }}</td>
+                <td>{{ url.last_check.status }}</td>
+                <td>{{ url.last_check.created_at }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-danger">
+        {% trans "Nenhuma Url cadastrada." %}
+    </div>
+    {% endif %}
+{% endblock %}
