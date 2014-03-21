@@ -30,7 +30,14 @@
                             <span class="label label-warning">{% trans "Warning" %}</span>
                             {% endif %}
                         </td>
-                        <td>{{ hc.status_code }}</td>
+                        <td>
+                            {% if hc.status_code %}
+                            {{ hc.status_code }}
+                            {% else %}
+                            {% trans "Server Down" %}
+                            {% endif %}
+
+                         </td>
                         <td>{{ hc.created_at }}</td>
                     </tr>
                 {% endfor %}

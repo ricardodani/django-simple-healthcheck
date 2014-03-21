@@ -13,6 +13,7 @@
                 <th>Url</th>
                 <th>Health Check</th>
                 <th>Status Code</th>
+                <th>Health %</th>
                 <th>When</th>
             </tr>
         </thead>
@@ -27,7 +28,25 @@
                     <span class="label label-warning">{% trans "Warning" %}</span>
                     {% endif %}
                 </td>
-                <td>{{ url.last_check.status_code }}</td>
+                <td>
+                    {% if  url.last_check.status_code %}
+                        {{ url.last_check.status_code }}
+                    {% else %}
+                        {% trans "Server Down" %}
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="progress">
+                        {% with url.status_percent as status_percent %}
+                        <div class="progress-bar progress-bar-success" style="width: {{ status_percent.success }}%">
+                            <span class="sr-only">{{ status_percent.success }}% Complete (success)</span>
+                        </div>
+                        <div class="progress-bar progress-bar-warning" style="width: {{ status_percent.warning }}%">
+                            <span class="sr-only">{{ status_percent.warning }}% Complete (warning)</span>
+                        </div>
+                        {% endwith %}
+                    </div>
+                </td>
                 <td>{{ url.last_check.created_at }}</td>
             </tr>
         {% endfor %}

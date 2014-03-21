@@ -14,9 +14,14 @@ class Url(models.Model):
         return self.address
 
     def check_url(self):
-        res = requests.get(self.address)
-        status = res.status_code == 200
-        hc = HealthCheck(url=self, status_code=res.status_code, status=status)
+        hc = HealthCheck(url=self)
+        try:
+            res = requests.get(self.address)
+        except requests.exceptions.ConnectionError:
+            hc.status = False
+        else:
+            hc.status_code = res.status_code
+            hc.status = res.status_code == 200
         hc.save()
 
     @property
@@ -30,12 +35,23 @@ class Url(models.Model):
         status_codes = self.healthcheck_set.values('status_code')
         ocurrences = {}
         for s in status_codes:
+            if s['status_code'] is None:
+                s['status_code'] = 'Server Down'
             if s['status_code'] in ocurrences:
                 ocurrences[s['status_code']] += 1
             else:
                 ocurrences[s['status_code']] = 1
         return [(x, ocurrences[x]) for x in ocurrences]
 
+    @property
+    def status_percent(self):
+        qs = self.healthcheck_set
+        rate = float(qs.filter(status=True).count()) / qs.all().count()
+        percent = int(rate * 100)
+        return {
+            'success': percent,
+            'warning': 100 - percent
+        }
 
 class HealthCheck(models.Model):
     '''A status of a checking url proccess.
@@ -43,7 +59,7 @@ class HealthCheck(models.Model):
 
     url = models.ForeignKey('Url')
     status = models.BooleanField()
-    status_code = models.IntegerField()
+    status_code = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
