@@ -23,6 +23,19 @@ class Url(models.Model):
     def last_check(self):
         return self.healthcheck_set.first()
 
+    @property
+    def count_status(self):
+        # TODO: this code needs refactoring (i think I can calculate this
+        # only in database)
+        status_codes = self.healthcheck_set.values('status_code')
+        ocurrences = {}
+        for s in status_codes:
+            if s['status_code'] in ocurrences:
+                ocurrences[s['status_code']] += 1
+            else:
+                ocurrences[s['status_code']] = 1
+        return [(x, ocurrences[x]) for x in ocurrences]
+
 
 class HealthCheck(models.Model):
     '''A status of a checking url proccess.
