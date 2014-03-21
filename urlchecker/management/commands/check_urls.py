@@ -4,6 +4,7 @@ import daemon
 import time
 from optparse import make_option
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from urlchecker.models import Url
@@ -34,7 +35,7 @@ class Command(BaseCommand):
     def tasks_loop(self):
         while True:
             self.check_urls()
-            time.sleep(5)
+            time.sleep(settings.HEALTHCHECKER_PERIOD_IN_SECONDS)
 
     def handle(self, *args, **options):
         if options['daemon']:
