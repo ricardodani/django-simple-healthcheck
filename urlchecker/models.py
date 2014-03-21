@@ -13,4 +13,7 @@ class Url(models.Model):
 
 
 class Status(models.Model):
-    pass
+
+    url = models.ForeignKey('Url')
+    status_code = models.IntegerField()
+
