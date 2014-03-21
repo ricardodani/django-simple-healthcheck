@@ -10,7 +10,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Url</th>
                 <th>Health Check</th>
                 <th>Status Code</th>
@@ -20,9 +19,14 @@
         <tbody>
         {% for url in urls %}
             <tr>
-                <td>{{ url.id }}</td>
                 <td><a title="{{ url }}" href="{% url "healthcheck_detail_url" url.id %}">{{ url }}</a></td>
-                <td>{{ url.last_check.status }}</td>
+                <td>
+                    {% if url.last_check.status %}
+                    <span class="label label-success">{% trans "Working" %}</span>
+                    {% else %}
+                    <span class="label label-warning">{% trans "Warning" %}</span>
+                    {% endif %}
+                </td>
                 <td>{{ url.last_check.status_code }}</td>
                 <td>{{ url.last_check.created_at }}</td>
             </tr>

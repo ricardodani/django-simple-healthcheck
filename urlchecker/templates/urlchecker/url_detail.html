@@ -5,12 +5,13 @@
 {% block title %}- {{ object }}{% endblock %}
 
 {% block content %}
-    <h1>{{ object }} - Health Checks</h1>
+    <h1>
+        {{ object }} - Health Checks
+    </h1>
     {% if url %}
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Status</th>
                 <th>Status Code</th>
                 <th>When</th>
@@ -19,8 +20,13 @@
         <tbody>
         {% for hc in object.healthcheck_set.all %}
             <tr>
-                <td>{{ hc.id }}</td>
-                <td>{{ hc.status }}</td>
+                <td>
+                    {% if hc.status %}
+                    <span class="label label-success">{% trans "Working" %}</span>
+                    {% else %}
+                    <span class="label label-warning">{% trans "Warning" %}</span>
+                    {% endif %}
+                </td>
                 <td>{{ hc.status_code }}</td>
                 <td>{{ hc.created_at }}</td>
             </tr>
