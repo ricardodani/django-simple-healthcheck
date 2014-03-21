@@ -12,8 +12,10 @@ class Url(models.Model):
         return self.address
 
 
-class Status(models.Model):
+class HealthCheck(models.Model):
 
     url = models.ForeignKey('Url')
     status_code = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
