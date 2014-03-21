@@ -1,5 +1,5 @@
 """
-Django settings for helthcheck project.
+Django settings for healthcheck project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -49,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'helthcheck.urls'
+ROOT_URLCONF = 'healthcheck.urls'
 
-WSGI_APPLICATION = 'helthcheck.wsgi.application'
+WSGI_APPLICATION = 'healthcheck.wsgi.application'
 
 
 # Database
