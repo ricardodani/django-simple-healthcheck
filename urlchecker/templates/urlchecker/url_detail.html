@@ -17,6 +17,7 @@
                     <tr>
                         <th>Status</th>
                         <th>Status Code</th>
+                        <th>Time elapsed</th>
                         <th>When</th>
                     </tr>
                 </thead>
@@ -38,6 +39,7 @@
                             {% endif %}
 
                          </td>
+                        <td>{{ hc.time }}</td>
                         <td>{{ hc.created_at }}</td>
                     </tr>
                 {% endfor %}
@@ -45,7 +47,8 @@
             </table>
         </div>
         <div class="col-md-6">
-            <div id="piechart_3d" style="height: 400px;"></div>
+            <div id="chart_status_code" style="height: 300px;"></div>
+            <div id="chart_time_elapsed" style="height: 300px;"></div>
         </div>
     </div>
     {% else %}
@@ -59,10 +62,11 @@
 {% block script %}
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
-    {% if object.count_status %}
         google.load("visualization", "1", {packages:["corechart"]});
+        {% if object.count_status %}
+        google.setOnLoadCallback(drawStatusCodeChart);
         google.setOnLoadCallback(drawChart);
-        function drawChart() {
+        function drawStatusCodeChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Status Code', 'Count'],
                 {% for status in object.count_status %}
@@ -76,9 +80,27 @@
                 is3D: true,
             };
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            var chart = new google.visualization.PieChart(document.getElementById('chart_status_code'));
             chart.draw(data, options);
         }
-    {% endif %}
+        {% endif %}
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+            ['When', 'Operation Time'],
+            {% for hc in object.healthcheck_set.all|slice:":50" %}
+                {% if hc.time %}
+                ['{{ hc.when}}',  {{ hc.time }}],
+                {% endif %}
+            {% endfor %}
+            ]);
+
+            var options = {
+            title: 'Time Elapsed in Seconds (Last 50)'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_time_elapsed'));
+            chart.draw(data, options);
+        }
     </script>
 {% endblock %}

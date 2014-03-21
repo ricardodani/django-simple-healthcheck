@@ -1,4 +1,5 @@
 import requests
+import time
 
 from django.db import models
 
@@ -14,6 +15,7 @@ class Url(models.Model):
         return self.address
 
     def check_url(self):
+        t1 = time.time()
         hc = HealthCheck(url=self)
         try:
             res = requests.get(self.address)
@@ -22,6 +24,8 @@ class Url(models.Model):
         else:
             hc.status_code = res.status_code
             hc.status = res.status_code == 200
+        t2 = time.time()
+        hc.time = t2 - t1
         hc.save()
 
     @property
@@ -60,6 +64,7 @@ class HealthCheck(models.Model):
     url = models.ForeignKey('Url')
     status = models.BooleanField()
     status_code = models.IntegerField(null=True)
+    time = models.FloatField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

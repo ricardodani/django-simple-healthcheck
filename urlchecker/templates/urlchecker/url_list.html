@@ -13,6 +13,7 @@
                 <th>Url</th>
                 <th>Last Health Check</th>
                 <th>Last Status Code</th>
+                <th>Last Time Elapsed</th>
                 <th>Health %</th>
                 <th>When</th>
             </tr>
@@ -35,6 +36,7 @@
                         {% trans "Server Down" %}
                     {% endif %}
                 </td>
+                <td>{{ url.last_check.time }}</td>
                 <td>
                     <div class="progress">
                         {% with url.status_percent as status_percent %}
