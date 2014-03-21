@@ -1,0 +1,35 @@
+{% extends "urlchecker/base.html" %}
+
+{% load i18n %}
+
+{% block title %}- {{ object }}{% endblock %}
+
+{% block content %}
+    <h1>{{ object }} - Health Checks</h1>
+    {% if url %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Status</th>
+                <th>Status Code</th>
+                <th>When</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for hc in object.healthcheck_set.all %}
+            <tr>
+                <td>{{ hc.id }}</td>
+                <td>{{ hc.status }}</td>
+                <td>{{ hc.status_code }}</td>
+                <td>{{ hc.created_at }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-danger">
+        {% trans "Url not checked." %}
+    </div>
+    {% endif %}
+{% endblock %}

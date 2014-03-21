@@ -12,7 +12,8 @@
             <tr>
                 <th>#</th>
                 <th>Url</th>
-                <th>Last Health Check</th>
+                <th>Health Check</th>
+                <th>Status Code</th>
                 <th>When</th>
             </tr>
         </thead>
@@ -20,8 +21,9 @@
         {% for url in urls %}
             <tr>
                 <td>{{ url.id }}</td>
-                <td>{{ url }}</td>
+                <td><a title="{{ url }}" href="{% url "healthcheck_detail_url" url.id %}">{{ url }}</a></td>
                 <td>{{ url.last_check.status }}</td>
+                <td>{{ url.last_check.status_code }}</td>
                 <td>{{ url.last_check.created_at }}</td>
             </tr>
         {% endfor %}
@@ -29,7 +31,7 @@
     </table>
     {% else %}
     <div class="alert alert-danger">
-        {% trans "Nenhuma Url cadastrada." %}
+        {% trans "No URLs in database." %}
     </div>
     {% endif %}
 {% endblock %}

@@ -19,6 +19,10 @@ class Url(models.Model):
         hc = HealthCheck(url=self, status_code=res.status_code, status=status)
         hc.save()
 
+    @property
+    def last_check(self):
+        return self.healthcheck_set.first()
+
 
 class HealthCheck(models.Model):
     '''A status of a checking url proccess.
