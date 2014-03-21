@@ -1,2 +1,1 @@
-*.pyc
-.ropeproject
+db.sqlite3
