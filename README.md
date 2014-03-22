@@ -6,25 +6,25 @@ A simple URL healthcheck
 Instructions
 ------------
 
-Install requirements::
-
-  pip install -r requirements.txt
+Install requirements:
+      
+        pip install -r requirements.txt
 
 Prepare database::
 
-  ./manage.py syncdb --migrate
+        ./manage.py syncdb --migrate
 
 
 To run the check_urls command
 --------------------------
 
-Normal proccess::
+Normal proccess:
 
-  ./manage.py check_urls
+      ./manage.py check_urls
 
-As a daemon::
+As a daemon:
 
-  ./manage.py check_urls --daemon
+      ./manage.py check_urls --daemon
 
 
 Create some URL's
