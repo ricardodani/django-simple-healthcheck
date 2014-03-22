@@ -37,15 +37,15 @@ class Url(models.Model):
         # TODO: this code needs refactoring (i think I can calculate this
         # only in database)
         status_codes = self.healthcheck_set.values('status_code')
-        ocurrences = {}
+        status_count = {}
         for s in status_codes:
             if s['status_code'] is None:
                 s['status_code'] = 'Server Down'
-            if s['status_code'] in ocurrences:
-                ocurrences[s['status_code']] += 1
+            if s['status_code'] in status_count:
+                status_count[s['status_code']] += 1
             else:
-                ocurrences[s['status_code']] = 1
-        return [(x, ocurrences[x]) for x in ocurrences]
+                status_count[s['status_code']] = 1
+        return [(x, status_count[x]) for x in status_count]
 
     @property
     def status_percent(self):
