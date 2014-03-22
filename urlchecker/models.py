@@ -50,12 +50,14 @@ class Url(models.Model):
     @property
     def status_percent(self):
         qs = self.healthcheck_set
-        rate = float(qs.filter(status=True).count()) / qs.all().count()
-        percent = int(rate * 100)
-        return {
-            'success': percent,
-            'warning': 100 - percent
-        }
+        ok_count = float(qs.filter(status=True).count())
+        all_count = qs.all().count()
+        ok_rate =  ok_count / all_count if all_count else None
+        if ok_rate:
+            percent = int(ok_rate * 100)
+            return {'success': percent, 'warning': 100 - percent}
+        else:
+            return {'success': 0, 'warning': 0}
 
 class HealthCheck(models.Model):
     '''A status of a checking url proccess.

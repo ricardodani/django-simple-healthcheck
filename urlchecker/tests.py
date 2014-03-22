@@ -1,7 +1,9 @@
 from django.test import TestCase, Client
+from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 
 from .models import Url
+
 
 class UrlCheckerModelTestCase(TestCase):
 
@@ -18,9 +20,14 @@ class UrlCheckerModelTestCase(TestCase):
 class UrlCheckerViewsTestCase(TestCase):
 
     def setUp(self):
+        self.url = Url.objects.create(address="http://localhost/")
         self.client = Client()
 
-    def test_healthcheck_view_returns_200(self):
-        r = self.client.get('/healthcheck/')
+    def test_view_list_urls_returns_200(self):
+        r = self.client.get(reverse('healthcheck_list_urls'))
         self.assertEquals(r.status_code, 200)
 
+    def test_view_detail_url_returns_200(self):
+        r = self.client.get(reverse('healthcheck_detail_url',
+                                    args=[self.url.id]))
+        self.assertEquals(r.status_code, 200)
