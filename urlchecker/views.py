@@ -1,9 +1,9 @@
 from django.views.generic import TemplateView, DetailView
 
-from .models import Url, HealthCheck
+from .models import Url
 
 
-class HealthCheckListUrlsView(TemplateView):
+class ListUrlsView(TemplateView):
 
     template_name = 'urlchecker/url_list.html'
 
@@ -13,6 +13,6 @@ class HealthCheckListUrlsView(TemplateView):
         return context
 
 
-class HealthCheckDetailUrlView(DetailView):
+class DetailUrlView(DetailView):
 
     model = Url
