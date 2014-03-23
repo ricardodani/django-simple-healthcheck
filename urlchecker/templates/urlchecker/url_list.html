@@ -1,19 +1,20 @@
 {% extends "urlchecker/base.html" %}
 
 {% load i18n %}
+{% load humanize %}
 
 {% block title %}- Urls{% endblock %}
 
 {% block content %}
     <h1>Urls</h1>
     {% if urls %}
-    <table class="table">
+    <table class="table table-condensed table-hover table-striped table-responsive">
         <thead>
             <tr>
                 <th>Url</th>
                 <th>Last Health Check</th>
                 <th>Last Status Code</th>
-                <th>Last Time Elapsed</th>
+                <th>Last Response Time</th>
                 <th>Health %</th>
                 <th>When</th>
             </tr>
@@ -23,20 +24,24 @@
             <tr>
                 <td><a title="{{ url }}" href="{% url "healthcheck_detail_url" url.id %}">{{ url }}</a></td>
                 <td>
-                    {% if url.last_check.status %}
-                    <span class="label label-success">{% trans "Working" %}</span>
+                    {% if url.last_check.status_code %}
+                        {% if url.last_check.status %}
+                        <span class="label label-success">{% trans "Working" %}</span>
+                        {% else %}
+                        <span class="label label-warning">{% trans "Warning" %}</span>
+                        {% endif %}
                     {% else %}
-                    <span class="label label-warning">{% trans "Warning" %}</span>
+                        <span class="label label-danger">{% trans "Conn. Error" %}</span>
                     {% endif %}
                 </td>
                 <td>
                     {% if  url.last_check.status_code %}
                         {{ url.last_check.status_code }}
                     {% else %}
-                        {% trans "Server Down" %}
+                        {% trans "-" %}
                     {% endif %}
                 </td>
-                <td>{{ url.last_check.time }}</td>
+                <td>{{ url.last_check.time|floatformat:3 }}s</td>
                 <td>
                     <div class="progress">
                         {% with url.status_percent as status_percent %}
@@ -44,12 +49,12 @@
                             <span class="sr-only">{{ status_percent.success }}% Success</span>
                         </div>
                         <div class="progress-bar progress-bar-warning" style="width: {{ status_percent.warning }}%">
-                            <span class="sr-only">{{ status_percent.warning }}% Warning</span>
+                            <span class="sr-only">{{ status_percent.warning }}% warning</span>
                         </div>
                         {% endwith %}
                     </div>
                 </td>
-                <td>{{ url.last_check.created_at }}</td>
+                <td>{{ url.last_check.created_at|naturaltime }}</td>
             </tr>
         {% endfor %}
         </tbody>
