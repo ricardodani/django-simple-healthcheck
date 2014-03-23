@@ -1,8 +1,12 @@
-- Url model
-- Status model
-- Test Url model (add, update, delete)
-- Test Check model (add, update, delete)
-- checker.py
-- test_checker
-- Url admin
-- 
+- Add assets (css, js, bootstrap)
+- Turn urlchecker.models.HealthCheck statuses in something
+  more cool and informative.
+- Refactor calculation methods of Url thinking in performance
+- Install bcolors (also put on pypi)
+- use django-rest-framework with the urlchecker.views
+- Use the json api to create some javascript awesomeness
+- Perform model operations
+- Install django-cache-machine
+- Testing: Cover all code
+- Transform this project in an Pypi app
+- Use selenium to a Functional Test of the histories
