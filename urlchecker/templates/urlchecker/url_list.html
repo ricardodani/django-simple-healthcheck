@@ -41,10 +41,10 @@
                     <div class="progress">
                         {% with url.status_percent as status_percent %}
                         <div class="progress-bar progress-bar-success" style="width: {{ status_percent.success }}%">
-                            <span class="sr-only">{{ status_percent.success }}% Complete (success)</span>
+                            <span class="sr-only">{{ status_percent.success }}% Success</span>
                         </div>
                         <div class="progress-bar progress-bar-warning" style="width: {{ status_percent.warning }}%">
-                            <span class="sr-only">{{ status_percent.warning }}% Complete (warning)</span>
+                            <span class="sr-only">{{ status_percent.warning }}% Warning</span>
                         </div>
                         {% endwith %}
                     </div>

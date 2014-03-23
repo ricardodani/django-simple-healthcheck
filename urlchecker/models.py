@@ -1,13 +1,16 @@
 import requests
 import time
 
+from django.conf import settings
 from django.db import models
+
 
 class Url(models.Model):
     '''A Url to be checked.
     '''
 
-    address = models.URLField(null=False, blank=False)
+    address = models.URLField()
+    check_interval = models.IntegerField(default=settings.URLCHECKER_INTERVAL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
