@@ -1,30 +1,40 @@
 django-simple-healthcheck
 =========================
 
-A simple URL healthcheck
+A simple URL healthcheck django project.
 
 Instructions
 ------------
 
 Install requirements:
-      
-        pip install -r requirements.txt
 
-Prepare database::
+    pip install -r requirements.txt
 
-        ./manage.py syncdb --migrate
+Prepare database:
 
+    ./manage.py syncdb --migrate
+
+Settings
+--------
+
+Define the default sleep interval for an url check process:
+
+    URLCHECKER_INTERVAL = 10 # 10 seconds
 
 To run the check_urls command
 --------------------------
 
-Normal proccess:
+Usual:
 
-      ./manage.py check_urls
+    ./manage.py check_urls
 
-As a daemon:
+Super verbose:
 
-      ./manage.py check_urls --daemon
+    ./manage.py check_urls -v2
+
+No verbose:
+
+    ./manage.py check_urls -v0
 
 
 Create some URL's
