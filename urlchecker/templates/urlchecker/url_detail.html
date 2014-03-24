@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for hc in object.healthcheck_set.recent_order|slice:":100" %}
+                {% for hc in object.get_recent_healthchecks|slice:":100" %}
                     <tr>
                         <td>
                             {% if hc.status_code %}
@@ -43,7 +43,13 @@
                             {% endif %}
 
                          </td>
-                        <td>{{ hc.time|floatformat:3 }}s</td>
+                        <td>
+                            {% if hc.status_code %}
+                                {{ hc.time|floatformat:3 }}s
+                            {% else %}
+                                {% trans "-" %}
+                            {% endif %}
+                        </td>
                         <td>{{ hc.created_at }}</td>
                     </tr>
                 {% endfor %}
@@ -92,9 +98,13 @@
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
             ['When', 'Response Time'],
-            {% for hc in object.healthcheck_set.recent_order|slice:":50" %}
+            {% for hc in object.get_recent_healthchecks|slice:":100" %}
                 {% if hc.time %}
-                ['{{ hc.created_at|time }}',  {{ hc.time }}],
+                    {% if hc.status_code %}
+                        ['{{ hc.created_at|time }}',  {{ hc.time }}],
+                    {% else %}
+                        ['{{ hc.created_at|time }}',  null],
+                    {% endif %}
                 {% endif %}
             {% endfor %}
             ]);

@@ -43,7 +43,7 @@ class Url(models.Model):
         status_count = {}
         for s in status_codes:
             if s['status_code'] is None:
-                s['status_code'] = 'Server Down'
+                s['status_code'] = 'Not responding'
             if s['status_code'] in status_count:
                 status_count[s['status_code']] += 1
             else:
@@ -55,19 +55,15 @@ class Url(models.Model):
         qs = self.healthcheck_set
         ok_count = float(qs.filter(status=True).count())
         all_count = qs.all().count()
-        ok_rate =  ok_count / all_count if all_count else None
+        ok_rate = ok_count / all_count if all_count else None
         if ok_rate:
             percent = int(ok_rate * 100)
             return {'success': percent, 'warning': 100 - percent}
         else:
             return {'success': 0, 'warning': 0}
 
-
-class HealthCheckManager(models.Manager):
-
-    def recent_order(self):
-        qs = super(HealthCheckManager, self).get_queryset()
-        return qs.order_by('-created_at')
+    def get_recent_healthchecks(self):
+        return self.healthcheck_set.all().order_by('-created_at')
 
 
 class HealthCheck(models.Model):
@@ -80,5 +76,3 @@ class HealthCheck(models.Model):
     time = models.FloatField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    objects = HealthCheckManager()
