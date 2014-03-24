@@ -15,4 +15,4 @@ class ListUrlsView(TemplateView):
 
 class DetailUrlView(DetailView):
 
-    model = Url
+    queryset = Url.objects.all().order_by('-created_at')

@@ -33,7 +33,7 @@ class Url(models.Model):
 
     @property
     def last_check(self):
-        return self.healthcheck_set.first()
+        return self.healthcheck_set.last()
 
     @property
     def count_status(self):
@@ -62,6 +62,14 @@ class Url(models.Model):
         else:
             return {'success': 0, 'warning': 0}
 
+
+class HealthCheckManager(models.Manager):
+
+    def recent_order(self):
+        qs = super(HealthCheckManager, self).get_queryset()
+        return qs.order_by('-created_at')
+
+
 class HealthCheck(models.Model):
     '''A status of a checking url proccess.
     '''
@@ -73,6 +81,4 @@ class HealthCheck(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        ordering = ['-created_at']
-
+    objects = HealthCheckManager()
