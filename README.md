@@ -24,17 +24,9 @@ Define the default sleep interval for an url check process:
 To run the check_urls command
 --------------------------
 
-Usual:
+
 
     ./manage.py check_urls
-
-Super verbose:
-
-    ./manage.py check_urls -v2
-
-No verbose:
-
-    ./manage.py check_urls -v0
 
 
 Create some URL's
